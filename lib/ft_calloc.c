@@ -6,11 +6,13 @@
 /*   By: kane <kane@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/04 20:50:35 by kane              #+#    #+#             */
-/*   Updated: 2024/06/04 20:50:55 by kane             ###   ########.fr       */
+/*   Updated: 2024/06/05 19:24:05 by kane             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
+
+static void	ft_bzero(void *s, size_t n);
 
 void	*ft_calloc(size_t nmemb, size_t size)
 {
@@ -24,4 +26,17 @@ void	*ft_calloc(size_t nmemb, size_t size)
 		return (NULL);
 	ft_bzero(alloc, nmemb * size);
 	return (alloc);
+}
+
+static void	ft_bzero(void *s, size_t n)
+{
+	unsigned char	*str;
+
+	str = s;
+	while (n > 0)
+	{
+		*str = 0;
+		str++;
+		n--;
+	}
 }
