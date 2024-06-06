@@ -6,13 +6,13 @@
 /*   By: kane <kane@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/03 22:21:27 by kane              #+#    #+#             */
-/*   Updated: 2024/06/06 01:19:07 by kane             ###   ########.fr       */
+/*   Updated: 2024/06/06 15:01:22 by kane             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-void	usage(void);
+static	void	usage(void);
 static	void	cleanup(t_data *data);
 
 int	main(int ac, char **av)
@@ -29,7 +29,7 @@ int	main(int ac, char **av)
 	return (0);
 }
 
-void	usage(void)
+static	void	usage(void)
 {
 	printf("Usage: ./philosopher number_of_philosophers time_to_die time_to_eat\
 	time_to_sleep (optional)[number_of_times_each_philosopher_must_eat]\n");

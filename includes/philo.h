@@ -6,7 +6,7 @@
 /*   By: kane <kane@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/04 20:12:34 by kane              #+#    #+#             */
-/*   Updated: 2024/06/06 01:15:26 by kane             ###   ########.fr       */
+/*   Updated: 2024/06/06 18:59:09 by kane             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,14 +23,15 @@
 
 # define MAX_PHILOSOPHERS 200
 
+struct	s_data;
 typedef struct s_philo
 {
 	int				id;
 	int				nb_of_meals;
 	long			start;
 	long			last_meal;
-	pthread_mutex_t	fork;
 	pthread_t		thread;
+	struct s_data	*data;
 }	t_philo;
 
 typedef struct s_data
@@ -41,6 +42,7 @@ typedef struct s_data
 	int				time_to_sleep;
 	int				nb_of_meals;
 	int				dead;
+	pthread_mutex_t	*forks;
 	pthread_mutex_t	print;
 	pthread_mutex_t	meal_mutex;
 	pthread_mutex_t	dead_mutex;
@@ -51,10 +53,10 @@ int		ft_atoi(const char *str);
 void	*ft_calloc(size_t nmemb, size_t size);
 size_t	ft_strlen(const char *s);
 void	ft_usleep(long time);
-void	usage(void);
 long	get_time(void);
 
 void	parsing(int ac, char **av);
-int	init(t_data *data, int ac, char **av);
+int		init(t_data *data, int ac, char **av);
+void	*routine(void *args);
 
 #endif

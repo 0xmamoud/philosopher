@@ -6,7 +6,7 @@
 #    By: kane <kane@student.42.fr>                  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/06/04 20:03:14 by kane              #+#    #+#              #
-#    Updated: 2024/06/06 01:16:34 by kane             ###   ########.fr        #
+#    Updated: 2024/06/06 15:00:54 by kane             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -32,7 +32,6 @@ SRC =  $(addprefix $(SRC_DIR)/, main.c \
 		ft_strlen.c \
 		ft_usleep.c \
 		get_time.c \
-		usage.c \
 		)
 		
 OBJ = $(addprefix $(OBJ_DIR)/,$(notdir $(SRC:.c=.o)))
