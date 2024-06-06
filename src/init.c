@@ -3,32 +3,32 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kane <kane@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: mamoud <mamoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/05 23:53:33 by kane              #+#    #+#             */
-/*   Updated: 2024/06/06 18:11:39 by kane             ###   ########.fr       */
+/*   Updated: 2024/06/06 22:16:21 by mamoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-static	void	data_input(t_data *data, int ac, char **av);
+static	void	init_data_input(t_data *data, int ac, char **av);
 static	int		init_philos(t_data *data);
+static	int		init_mutexes(t_data *data);
 
-int	init(t_data *data, int ac, char **av)
+void	init(t_data *data, int ac, char **av)
 {
-	data_input(data, ac, av);
+	init_data_input(data, ac, av);
 	if (!init_philos(data))
+		exit(0);
+	if (!init_mutexes(data))
 	{
-		pthread_mutex_destroy(&data->print);
-		pthread_mutex_destroy(&data->meal_mutex);
-		pthread_mutex_destroy(&data->dead_mutex);
-		return (0);
+		free(data->philos);
+		exit(0);
 	}
-	return (1);
 }
 
-static	void	data_input(t_data *data, int ac, char **av)
+static	void	init_data_input(t_data *data, int ac, char **av)
 {
 	data->nb_of_philos = ft_atoi(av[1]);
 	data->time_to_die = ft_atoi(av[2]);
@@ -39,11 +39,8 @@ static	void	data_input(t_data *data, int ac, char **av)
 	else
 		data->nb_of_meals = -1;
 	data->dead = 0;
-	pthread_mutex_init(&data->print, NULL);
-	pthread_mutex_init(&data->meal_mutex, NULL);
-	pthread_mutex_init(&data->dead_mutex, NULL);
+	data->stop = 0;
 }
-
 static	int	init_philos(t_data *data)
 {
 	int	i;
@@ -57,9 +54,31 @@ static	int	init_philos(t_data *data)
 		data->philos[i].id = i;
 		data->philos[i].nb_of_meals = 0;
 		data->philos[i].start = 0;
-		data->philos[i].last_meal = 0;
+		data->philos[i].last_meal = get_time();
+		data->philos[i].eating = 0;
 		data->philos[i].data = data;
 		i++;
 	}
 	return (1);	
 }
+
+static	int	init_mutexes(t_data *data)
+{
+	int	i;
+
+	i = 0;
+	data->forks = ft_calloc(data->nb_of_philos, sizeof(pthread_mutex_t));
+	if (!data->forks)
+		return (0);
+	while (i < data->nb_of_philos)
+	{
+		pthread_mutex_init(&data->forks[i], NULL);
+		i++;
+	}
+	pthread_mutex_init(&data->print, NULL);
+	pthread_mutex_init(&data->meal_mutex, NULL);
+	pthread_mutex_init(&data->dead_mutex, NULL);
+	pthread_mutex_init(&data->stop_mutex, NULL);
+	return (1);
+}
+
