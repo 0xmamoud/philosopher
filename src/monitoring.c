@@ -6,15 +6,15 @@
 /*   By: mamoud <mamoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/06 15:05:58 by kane              #+#    #+#             */
-/*   Updated: 2024/06/06 22:13:36 by mamoud           ###   ########.fr       */
+/*   Updated: 2024/06/07 02:51:57 by mamoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
 static int	create_threads(t_data *data);
-static	void	check_death(t_data *data);
-static	void	check_all_total_meals(t_data *data);
+static	int	check_death(t_data *data);
+static	int	check_all_total_meals(t_data *data);
 static int	join_threads(t_data *data);
 
 void	monitoring(t_data *data)
@@ -26,11 +26,7 @@ void	monitoring(t_data *data)
 	}
 	while (1)
 	{
-		check_death(data);
-		if (data->dead)
-			break ;
-		check_all_total_meals(data);
-		if (data->stop)
+		if (check_death(data) || check_all_total_meals(data))
 			break ;
 	}
 	if (!join_threads(data))
@@ -47,55 +43,75 @@ static int	create_threads(t_data *data)
 	i = 0;
 	while (i < data->nb_of_philos)
 	{
-		if (pthread_create(&data->philos[i].thread, NULL, \
-			routine, &data->philos[i]))
-		{
-			printf("Error: failed to create thread\n");
-			return (0);
-		}
-		data->philos[i].start = get_time();
+		// if (pthread_create(&data->philos[i].thread, NULL, \
+		// 	routine, &data->philos[i]))
+		// {
+		// 	printf("Error: failed to create thread\n");
+		// 	return (0);
+		// }
+		pthread_create(&data->philos[i].thread, NULL, routine, &data->philos[i]);
 		i++;
 	}
 	return (1);
 }
 
-static	void	check_death(t_data *data)
+static int	is_dead(t_philo *philo)
+{
+	pthread_mutex_lock(&philo->data->meal_mutex);
+	if (get_time() - philo->last_meal > philo->data->time_to_die && !philo->eating)
+	{
+		pthread_mutex_unlock(&philo->data->meal_mutex);
+		return (1);
+	}
+	pthread_mutex_unlock(&philo->data->meal_mutex);
+	return (0);
+}
+
+static	int	check_death(t_data *data)
 {
 	int	i;
 
 	i = 0;
 	while (i < data->nb_of_philos)
 	{
-		if (get_time() - data->philos[i].last_meal > data->time_to_die && \
-			data->philos[i].eating == 0)
+		if (is_dead(&data->philos[i]))
 		{
-			pthread_mutex_lock(&data->dead_mutex);
 			ft_print(&data->philos[i], "died");
-			data->dead = 1;
+			pthread_mutex_lock(&data->dead_mutex);
+			data->dead++;
 			pthread_mutex_unlock(&data->dead_mutex);
-			break ;
+			return (1);
 		}
 		i++;
 	}
+	return (0);
 }
 
-static	void	check_all_total_meals(t_data *data)
+static	int	check_all_total_meals(t_data *data)
 {
 	int	i;
+	int	meals;
 
+	if (data->nb_of_meals == -1)
+		return (0);
 	i = 0;
+	meals = 0;
 	while (i < data->nb_of_philos)
 	{
-		if (data->philos[i].nb_of_meals < data->nb_of_meals)
-			break ;
+		pthread_mutex_lock(&data->meal_mutex);
+		if (data->philos[i].nb_of_meals >= data->nb_of_meals)
+			meals++;
+		pthread_mutex_unlock(&data->meal_mutex);
 		i++;
 	}
-	if (i == data->nb_of_philos)
+	if (meals == data->nb_of_philos)
 	{
-		pthread_mutex_lock(&data->stop_mutex);
-		data->stop = 1;
-		pthread_mutex_unlock(&data->stop_mutex);
+		pthread_mutex_lock(&data->dead_mutex);
+		data->dead++;
+		pthread_mutex_unlock(&data->dead_mutex);
+		return (1);
 	}
+	return (0);
 }
 
 static int	join_threads(t_data *data)
@@ -105,8 +121,9 @@ static int	join_threads(t_data *data)
 	i = 0;
 	while (i < data->nb_of_philos)
 	{
-		if (pthread_join(data->philos[i].thread, NULL))
-			return (0);
+		// if (pthread_join(data->philos[i].thread, NULL))
+		// 	return (0);
+		pthread_join(data->philos[i].thread, NULL);
 		i++;
 	}
 	return (1);

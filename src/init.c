@@ -6,7 +6,7 @@
 /*   By: mamoud <mamoud@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/05 23:53:33 by kane              #+#    #+#             */
-/*   Updated: 2024/06/06 22:16:21 by mamoud           ###   ########.fr       */
+/*   Updated: 2024/06/07 00:59:36 by mamoud           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ static	int	init_philos(t_data *data)
 	{
 		data->philos[i].id = i;
 		data->philos[i].nb_of_meals = 0;
-		data->philos[i].start = 0;
+		data->philos[i].start = get_time();
 		data->philos[i].last_meal = get_time();
 		data->philos[i].eating = 0;
 		data->philos[i].data = data;
