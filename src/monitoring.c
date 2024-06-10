@@ -6,7 +6,7 @@
 /*   By: mkane <mkane@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/06 15:05:58 by kane              #+#    #+#             */
-/*   Updated: 2024/06/10 17:58:26 by mkane            ###   ########.fr       */
+/*   Updated: 2024/06/10 18:11:21 by mkane            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,6 @@
 static int	create_threads(t_data *data);
 static int	check_death(t_data *data);
 static int	check_all_total_meals(t_data *data);
-// static int	join_threads(t_data *data);
 
 void	monitoring(t_data *data)
 {
