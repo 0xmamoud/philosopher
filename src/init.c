@@ -3,18 +3,18 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mamoud <mamoud@student.42.fr>              +#+  +:+       +#+        */
+/*   By: mkane <mkane@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/05 23:53:33 by kane              #+#    #+#             */
-/*   Updated: 2024/06/07 00:59:36 by mamoud           ###   ########.fr       */
+/*   Updated: 2024/06/10 17:59:57 by mkane            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-static	void	init_data_input(t_data *data, int ac, char **av);
-static	int		init_philos(t_data *data);
-static	int		init_mutexes(t_data *data);
+static void	init_data_input(t_data *data, int ac, char **av);
+static int	init_philos(t_data *data);
+static int	init_mutexes(t_data *data);
 
 void	init(t_data *data, int ac, char **av)
 {
@@ -28,7 +28,7 @@ void	init(t_data *data, int ac, char **av)
 	}
 }
 
-static	void	init_data_input(t_data *data, int ac, char **av)
+static void	init_data_input(t_data *data, int ac, char **av)
 {
 	data->nb_of_philos = ft_atoi(av[1]);
 	data->time_to_die = ft_atoi(av[2]);
@@ -41,7 +41,8 @@ static	void	init_data_input(t_data *data, int ac, char **av)
 	data->dead = 0;
 	data->stop = 0;
 }
-static	int	init_philos(t_data *data)
+
+static int	init_philos(t_data *data)
 {
 	int	i;
 
@@ -59,10 +60,10 @@ static	int	init_philos(t_data *data)
 		data->philos[i].data = data;
 		i++;
 	}
-	return (1);	
+	return (1);
 }
 
-static	int	init_mutexes(t_data *data)
+static int	init_mutexes(t_data *data)
 {
 	int	i;
 
@@ -81,4 +82,3 @@ static	int	init_mutexes(t_data *data)
 	pthread_mutex_init(&data->stop_mutex, NULL);
 	return (1);
 }
-

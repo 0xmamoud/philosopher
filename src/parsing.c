@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kane <kane@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: mkane <mkane@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/05 23:06:16 by kane              #+#    #+#             */
-/*   Updated: 2024/06/05 23:52:09 by kane             ###   ########.fr       */
+/*   Updated: 2024/06/10 17:58:32 by mkane            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ static void	ft_error_msg(int index)
 		write(2, "number of meals must be greater or equal to 0\n", 47);
 	else if (index == 0)
 		write(2, "number of philosophers must be less than 200\n", 46);
-	exit (1);
+	exit(1);
 }
 
 void	parsing(int ac, char **av)

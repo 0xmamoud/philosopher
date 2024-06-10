@@ -3,14 +3,14 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: mamoud <mamoud@student.42.fr>              +#+  +:+       +#+         #
+#    By: mkane <mkane@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/06/04 20:03:14 by kane              #+#    #+#              #
-#    Updated: 2024/06/06 22:21:12 by mamoud           ###   ########.fr        #
+#    Updated: 2024/06/10 16:57:40 by mkane            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-NAME = philosopher
+NAME = philo
 
 SRC_DIR = src
 OBJ_DIR = obj

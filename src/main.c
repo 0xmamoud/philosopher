@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mamoud <mamoud@student.42.fr>              +#+  +:+       +#+        */
+/*   By: mkane <mkane@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/03 22:21:27 by kane              #+#    #+#             */
-/*   Updated: 2024/06/06 21:51:25 by mamoud           ###   ########.fr       */
+/*   Updated: 2024/06/10 18:00:05 by mkane            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-static	void	usage(void);
+static void	usage(void);
 
 int	main(int ac, char **av)
 {
@@ -34,7 +34,6 @@ int	main(int ac, char **av)
 	return (0);
 }
 
-
 void	cleanup(t_data *data)
 {
 	int	i;
@@ -44,15 +43,17 @@ void	cleanup(t_data *data)
 	{
 		pthread_mutex_destroy(&data->forks[i]);
 		i++;
-	}	
+	}
 	pthread_mutex_destroy(&data->print);
 	pthread_mutex_destroy(&data->meal_mutex);
 	pthread_mutex_destroy(&data->dead_mutex);
 	if (data->philos)
 		free(data->philos);
+	if (data->forks)
+		free(data->forks);
 }
 
-static	void	usage(void)
+static void	usage(void)
 {
 	printf("Usage: ./philosopher number_of_philosophers time_to_die time_to_eat\
 	time_to_sleep (optional)[number_of_times_each_philosopher_must_eat]\n");
