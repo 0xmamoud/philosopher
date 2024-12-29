@@ -1,69 +1,77 @@
-# Overview
+# 🧘‍♂️ Philosophers
 
-Here are the things you need to know if you want to succeed this assignment:
+**Philosophers** is a project from the 42 curriculum that explores concurrency and synchronization using threads and mutexes. The goal is to simulate the classic **Dining Philosophers Problem**, ensuring proper resource management and avoiding deadlocks.
 
-• One or more philosophers sit at a round table.
-There is a large bowl of spaghetti in the middle of the table.
+---
 
-• The philosophers alternatively eat, think, or sleep.
-While they are eating, they are not thinking nor sleeping;
-while thinking, they are not eating nor sleeping;
-and, of course, while sleeping, they are not eating nor thinking.
+## 🛠 Features
 
-• There are also forks on the table. There are as many forks as philosophers.
+- **Thread Management**: Each philosopher runs as an independent thread.
+- **Mutexes**: Used to prevent race conditions on shared resources (e.g., forks).
+- **Accurate Timing**: Includes a custom `usleep` implementation for precise timing.
+- **Resource Cleanup**: Ensures all threads and mutexes are properly released.
+- **Simulation Logic**:
+  - Philosophers alternate between thinking, eating, and sleeping.
+  - They must pick up two forks to eat.
+  - Simulation stops if a philosopher dies or after a defined number of meals.
 
-• Because serving and eating spaghetti with only one fork is very inconvenient, a
-philosopher takes their right and their left forks to eat, one in each hand.
+---
 
-• When a philosopher has finished eating, they put their forks back on the table and
-start sleeping. Once awake, they start thinking again. The simulation stops when
-a philosopher dies of starvation.
+## 🛠 Installation  
 
-• Every philosopher needs to eat and should never starve.
+No compilation is necessary, as a pre-built binary is provided.
 
-• Philosophers don’t speak with each other.
+### 1. Clone the Repository  
+    
+    git clone https://github.com/yourusername/philosophers.git
+    cd philosophers ; make
 
-• Philosophers don’t know if another philosopher is about to die.
+### 2. Run program:
 
-• No need to say that philosophers should avoid dying!
+    ./philo <number_of_philosophers> <time_to_die> <time_to_eat> <time_to_sleep> [number_of_times_each_philosopher_must_eat]
 
-# Global rules
+### 3. Exemple
+    ./philo 5 800 200 200
 
-You have to write a program for the mandatory part and another one for the bonus part
-(if you decide to do the bonus part). They both have to comply with the following rules:
+## ❗️ Rules and Restrictions
+- A philosopher dies if they don’t start eating within time_to_die milliseconds.
+- Philosophers can only pick up forks that are not currently in use.
+- Simulation stops when:
+    - A philosopher dies.
+    - Optional: All philosophers have eaten the specified number of times.
 
-• Global variables are forbidden!
+## 🧩 Implementation Details
+- Initialization:
+    - The program initializes threads, mutexes, and shared data structures before starting the  simulation.
 
-• Your(s) program(s) should take the following arguments:
-number_of_philosophers time_to_die time_to_eat time_to_sleep
-[number_of_times_each_philosopher_must_eat]
+- Routine:
+    - Each philosopher follows a loop: Think → Pick Up Forks → Eat → Put Down Forks → Sleep.
 
-    ◦ number_of_philosophers: The number of philosophers and also the number
-    of forks.
+- Monitoring:
+    - A separate thread monitors the status of philosophers to detect starvation or completion of the meal limit.
 
-    ◦ time_to_die (in milliseconds): If a philosopher didn’t start eating time_to_die
-    milliseconds since the beginning of their last meal or the beginning of the simulation, they die.
 
-    ◦ time_to_eat (in milliseconds): The time it takes for a philosopher to eat.
-    During that time, they will need to hold two forks.
 
-    ◦ time_to_sleep (in milliseconds): The time a philosopher will spend sleeping.
+## 📂 Directory Structure
 
-    ◦ number_of_times_each_philosopher_must_eat (optional argument): If all
-    philosophers have eaten at least number_of_times_each_philosopher_must_eat
-    times, the simulation stops. If not specified, the simulation stops when a
-    philosopher dies.
+```plaintext
+.
+├── Makefile               # Build script
+├── README.md              # Project documentation
+├── includes               # Header files
+│   └── philo.h            # Main header for the project
+├── lib                    # Utility functions
+│   ├── ft_atoi.c          # Convert string to integer
+│   ├── ft_calloc.c        # Memory allocation with initialization
+│   ├── ft_print.c         # Custom print functions
+│   ├── ft_strlen.c        # String length utility
+│   ├── ft_usleep.c        # Precise sleep implementation
+│   └── get_time.c         # Time handling functions
+└── src                    # Source files
+    ├── init.c             # Initialization of resources and structures
+    ├── main.c             # Entry point of the program
+    ├── monitoring.c       # Monitoring philosophers' states
+    ├── parsing.c          # Input argument validation and parsing
+    └── routine.c          # Core philosopher actions (eat, sleep, think)
 
-• Each philosopher has a number ranging from 1 to number_of_philosophers.
 
-• Philosopher number 1 sits next to philosopher number number_of_philosophers.
-Any other philosopher number N sits between philosopher number N - 1 and philosopher number N + 1.
-
-Each philosopher should be a thread.
-
-• There is one fork between each pair of philosophers. Therefore, if there are several
-philosophers, each philosopher has a fork on their left side and a fork on their right
-side. If there is only one philosopher, there should be only one fork on the table.
-
-• To prevent philosophers from duplicating forks, you should protect the forks state
-with a mutex for each of them.
